@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.1 -->
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkButton" id="addButton">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="receives_default">True</property>
+    <child>
+      <object class="GtkImage" id="image2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="icon_name">list-add-symbolic</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkLabel" id="noTaskLabel">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="xpad">12</property>
+    <property name="ypad">12</property>
+    <property name="label" translatable="yes">You can add tasks using the "+" button in the header bar.</property>
+    <property name="wrap">True</property>
+    <property name="wrap_mode">word-char</property>
+    <property name="max_width_chars">4</property>
+  </object>
+  <object class="GtkPaned" id="paned">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolledWindow">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="resize">False</property>
+        <property name="shrink">True</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="stackHolder">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="resize">True</property>
+        <property name="shrink">True</property>
+      </packing>
+    </child>
+  </object>
+</interface>
