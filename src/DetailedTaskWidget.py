@@ -67,6 +67,8 @@ class DetailedTaskWidget(Gtk.Box):
 
 
     def _init_ui(self):
+        self.set_border_width(6)
+    
         self.builder = Gtk.Builder()
         self.builder.add_from_file(join(Config.DESIGN_DIR,
                                         "DetailedTaskWidget.glade"))
@@ -89,8 +91,8 @@ class DetailedTaskWidget(Gtk.Box):
     def _select_none(self):
         """Show no task selected text"""
         noTaskText = self.builder.get_object("noTaskLabel").get_text()
-        self.descriptionLabel.set_text(noTaskText)
-        self.titleLabel.set_text("")
+        self.titleLabel.set_text(noTaskText)
+        self.descriptionLabel.set_text("")
         self.dateLabel.set_text("")
 
 

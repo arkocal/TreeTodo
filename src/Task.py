@@ -28,9 +28,15 @@ class Task(GObject.GObject):
         'activated': (GObject.SIGNAL_RUN_FIRST, None, ())}
 
 
-    def __init__(self, title):
+    def __init__(self, arg):
         GObject.GObject.__init__(self)
+        if type(arg) == tuple:
+            self.new_from_tuple(arg)
+        elif type(arg) == str:
+            self.new_from_title(arg)
 
+    
+    def new_from_title(self, title):
         self.title = title
         self.description = ""
         self.color = "#FFFFFF"
@@ -51,6 +57,26 @@ class Task(GObject.GObject):
         """Task UUID"""
         self.uuid = uuid.uuid1()
 
+
+    def new_from_tuple(self, t):
+        (uuid, title, description, color, unixdate, done, parentUUID, archived) = t
+        self.title = title
+        self.description = description
+        self.color = color
+        try:
+            date = datetime.fromtimestamp(unixdate)
+            self.date = (date.year, date.month, date.day)
+        except ValueError:  # Invalid / No date
+            self.date = None
+        self.done = bool(done)
+        self.archived = bool(archived)
+        
+        self.subtasks = []
+        self.archivedSubtasks = []
+        
+        self.parent = None
+        self.depth = 0
+        self.uuid = uuid
 
     def set_title(self, title):
         if title:
@@ -128,7 +154,7 @@ class Task(GObject.GObject):
             self.archivedSubtasks.remove(subtask)
         else:
             raise ValueError()
-        for toDelete in subtask.get_all_children():
+        for toDelete in subtask.get_all_subtasks():
             toDelete.emit("updated", TaskUpdateType.DELETED)
         self.update_done()
 
@@ -160,17 +186,15 @@ class Task(GObject.GObject):
         self.update_done()
 
 
-    # TODO revisit and rename
-    def get_all_children(self):
+    def get_all_subtasks(self):
         """Return a list of self and children and their children and so on"""
-        allChildren = [self]
-        for child in self.subtasks:
-            allChildren += child.get_all_children()
-        return allChildren
+        allSubtasks = [self]
+        for subtask in self.subtasks:
+            allSubtasks += subtask.get_all_subtasks()
+        return allSubtasks
 
 
-    # TODO revisit and rename
-    def get_all_archived_children(self, onlyTop=False):
+    def get_all_archived_subtasks(self, onlyTop=False):
         """Gets all children in tree that are in the archive.
 
         Params:
@@ -183,45 +207,10 @@ class Task(GObject.GObject):
         if self.archived:
             result.append(self)
         for child in self.subtasks:
-            result += [c for c in child.get_all_archived_children(onlyTop)
+            result += [c for c in child.get_all_archived_subtasks(onlyTop)
                        if c not in result]
         if not onlyTop:
             for child in self.archivedSubtasks:
-                result += [c for c in child.get_all_archived_children(onlyTop)
+                result += [c for c in child.get_all_archived_subtasks(onlyTop)
                            if c not in result]
         return result
-
-
-
-# TODO make method of Task class?
-def from_tuple(t):
-    (uuid, title, description, color, unixdate, done, parentUUID, archived) = t
-    task = Task(title)
-    task.uuid = uuid
-    task.description = description
-    task.color = color
-    try:
-        date = datetime.fromtimestamp(unixdate)
-        task.date = (date.year, date.month, date.day)
-    except ValueError:  # Invalid / No date
-        task.date = None
-    task.done = bool(done)
-    task.archived = bool(archived)
-    return task
-
-
-# TODO carry to tests
-def create_dummy_tasks():
-    """Create a dummy task tree for testing purposes"""
-    root = Task("Roottask")
-    root.uuid = uuid.UUID("00000000-0000-0000-0000-000000000000")
-    for i in range(3):
-        child = Task(str(i))
-        root.add_child(child)
-        for j in range(3):
-            cchild = Task(str(i) + "." + str(j))
-            if i == 1:
-                cchild.done = True
-            child.add_child(cchild)
-            cchild.update_done()
-    return root

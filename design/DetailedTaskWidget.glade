@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkBox" id="DetailedTaskWidget">
@@ -8,6 +8,7 @@
     <property name="margin_top">6</property>
     <property name="margin_bottom">6</property>
     <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
     <child>
       <object class="GtkBox" id="box3">
         <property name="visible">True</property>
@@ -88,7 +89,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Edit task title and description</property>
-                    <property name="stock">gtk-edit</property>
+                    <property name="icon_name">accessories-text-editor</property>
                   </object>
                 </child>
               </object>
@@ -132,7 +133,7 @@
                   <object class="GtkImage" id="image11">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="stock">gtk-select-color</property>
+                    <property name="icon_name">preferences-desktop-theme</property>
                   </object>
                 </child>
               </object>
@@ -224,10 +225,20 @@
       </packing>
     </child>
     <child>
+      <object class="GtkSeparator" id="separator2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
+    <child>
       <object class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="halign">start</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
         <property name="hscrollbar_policy">never</property>
@@ -251,13 +262,15 @@
       <packing>
         <property name="expand">True</property>
         <property name="fill">True</property>
-        <property name="position">3</property>
+        <property name="position">4</property>
       </packing>
     </child>
   </object>
   <object class="GtkLabel" id="noTaskLabel">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="halign">center</property>
+    <property name="valign">center</property>
     <property name="label" translatable="yes">No task selected</property>
   </object>
 </interface>

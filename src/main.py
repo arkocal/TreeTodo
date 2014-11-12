@@ -1,5 +1,3 @@
-# TODO set title and icon
-
 from sys import argv
 
 from gi.repository.Gtk import Application

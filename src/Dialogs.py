@@ -20,6 +20,9 @@ class DateDialog(Gtk.MessageDialog):
         builder = Gtk.Builder()
         builder.add_from_file(join(Config.DESIGN_DIR, "DateEditDialog.glade"))
         box = self.get_message_area()
+        for child in box.get_children():
+            box.remove(child)
+        
         content = builder.get_object("all")
         box.add(content)
         self.calendar = builder.get_object("calendar")
@@ -73,6 +76,8 @@ class TaskEditDialog(Gtk.MessageDialog):
             self.set_title(task_.title)
         # Add content
         box = self.get_message_area()
+        for child in box.get_children():
+            box.remove(child)
 
         builder = Gtk.Builder()
         pathToDialogXML = join(Config.DESIGN_DIR, "TitleDescEditDialog.glade")
@@ -116,16 +121,20 @@ class NewTaskDialog(Gtk.MessageDialog):
     def __init__(self, parent, task_=None):
         Gtk.MessageDialog.__init__(self, parent,
                                    buttons=Gtk.ButtonsType.OK_CANCEL)
+        #TODO translation
         self.set_title("New task")
 
         # Add content
         box = self.get_content_area()
+        box.remove(box.get_children()[0])
+
         builder = Gtk.Builder()
         pathToDialogXML = join(Config.DESIGN_DIR, "NewTaskWidget.glade")
         builder.add_from_file(pathToDialogXML)
 
         newTaskWidget = builder.get_object("newTaskWidget")
         box.add(newTaskWidget)
+        box.set_border_width(6)
 
         # Get objects
         self.nameEntry = builder.get_object("taskNameEntry")
@@ -344,6 +353,7 @@ class TaskEditPopover(Gtk.Popover):
 def edit_task_title_description(toplevel, task):
     """Create Dialog to edit task title and description"""
     dialog = TaskEditDialog(toplevel, task)
+    newTitle, newDescription = None, None
     try:
         newTitle, newDescription = dialog.run()
     except TypeError:  # Cancel
@@ -364,7 +374,6 @@ def edit_task_date(toplevel, task):
     dialog.destroy()
 
 
-# TODO make the arguments compatible with other dialog runners
 def edit_task_color(task):
     """Create Dialog to edit task color"""
 

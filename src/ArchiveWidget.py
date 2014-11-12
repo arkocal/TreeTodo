@@ -27,7 +27,7 @@ class ArchiveWidget (Gtk.ScrolledWindow):
         self.archiveHolder.pack_start(self.flowbox, False, False, 0)
         self.add(self.archiveHolder)
 
-        allTasks = self.rootTask.get_all_archived_children(onlyTop=True)
+        allTasks = self.rootTask.get_all_archived_subtasks(onlyTop=True)
         for child in allTasks:
             self._add_task(child)
         if not allTasks:
@@ -41,7 +41,7 @@ class ArchiveWidget (Gtk.ScrolledWindow):
         if task.parent.archived or task.archivedSubtasks:
             for child in self.flowbox.get_children():
                 self.flowbox.remove(child)
-            for task in self.rootTask.get_all_archived_children(onlyTop=True):
+            for task in self.rootTask.get_all_archived_subtasks(onlyTop=True):
                 self._add_task(task)
         else:
             self._add_task(task)
@@ -51,7 +51,7 @@ class ArchiveWidget (Gtk.ScrolledWindow):
     def on_task_dearchived(self, task):
         for child in self.flowbox.get_children():
             self.flowbox.remove(child)
-        for task in self.rootTask.get_all_archived_children(onlyTop=True):
+        for task in self.rootTask.get_all_archived_subtasks(onlyTop=True):
             self._add_task(task)
 
         if not self.flowbox.get_children():

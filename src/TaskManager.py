@@ -15,8 +15,8 @@ class TaskManager(GObject.GObject):
         self.dbHelper = DatabaseHelper.TaskDatabaseHelper(Config.DB_PATH)
 
         self.rootTask = self.dbHelper.get_root_task()
-        for task in (self.rootTask.get_all_children() +
-                     self.rootTask.get_all_archived_children()):
+        for task in (self.rootTask.get_all_subtasks() +
+                     self.rootTask.get_all_archived_subtasks()):
             task.connect("updated", self.on_task_updated)
 
 

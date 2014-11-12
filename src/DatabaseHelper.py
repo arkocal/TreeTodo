@@ -3,11 +3,10 @@ import os
 
 import sqlite3 as sql
 
-import Task
+from Task import Task
 
 # TODO find a proper solution for this
 INVALID_DATETIME = -100000000000
-
 
 class TaskDatabaseHelper(object):
 
@@ -66,14 +65,14 @@ class TaskDatabaseHelper(object):
 
         """
         # Create root task
-        rootTask = Task.Task("Roottask")
+        rootTask = Task("Roottask")
         # Get all tasks
         self.cursor.execute("SELECT * FROM Tasks;")
         # Create hierarchy
         tasks = []
         for t in self.cursor.fetchall():
             # Add parent UUID to tuple as it is not stored in task
-            tasks.append((t[6], Task.from_tuple(t)))
+            tasks.append((t[6], Task(t)))
 
         for (parentUUID, t) in tasks:
             parents = [p for (_, p) in tasks if parentUUID == p.uuid]

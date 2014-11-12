@@ -70,10 +70,10 @@ class TaskTreeElement(TreeElement):
         """Update task widget color"""
         self.modify_bg(Gtk.StateType.NORMAL,
                        Gdk.Color.parse(self.task.color)[1])
+        # Choose correct foreground color
         red = int(self.task.color[1:3], 16)
         green = int(self.task.color[3:5], 16)
         blue = int(self.task.color[5:], 16)
-        # TODO revisit and implement this cleaner
         gray = red * 0.299 + green * 0.587 + blue * 0.114
         if gray > 186:
             self.titleLabel.modify_fg(0, Gdk.Color.parse("#000")[1])

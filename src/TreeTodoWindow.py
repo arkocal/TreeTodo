@@ -23,8 +23,8 @@ class TreeTodoWindow(Gtk.Window):
         self.rootTask = rootTask
         rootTask.color = Config.DEFAULT_BG
 
-        for task in (rootTask.get_all_children() +
-                     rootTask.get_all_archived_children()):
+        for task in (rootTask.get_all_subtasks() +
+                     rootTask.get_all_archived_subtasks()):
             task.connect("updated", self.on_task_updated)
             task.connect("activated", self.on_task_activated)
 
@@ -138,7 +138,7 @@ class TreeTodoWindow(Gtk.Window):
     def _update_pane_text(self):
         if (not self.rootTask.subtasks and
                 self.noTaskLabel not in self.paneContent.get_children()):
-            self.paneContent.pack_start(self.noTaskLabel, False, False, 0)
+            self.paneContent.pack_start(self.noTaskLabel, False, False, 12)
         elif (self.rootTask.subtasks and
                 self.noTaskLabel in self.paneContent.get_children()):
             self.paneContent.remove(self.noTaskLabel)

@@ -79,7 +79,7 @@ class AgendaWidget(Gtk.ScrolledWindow):
     def get_dated_tasks(self, rootTask):
         """Return a list of rootTask's subtasks which have a date stated
         sorted by dates."""
-        tasks = [task for task in rootTask.get_all_children() if task.date]
+        tasks = [task for task in rootTask.get_all_subtasks() if task.date]
         tasks.sort(key=lambda task: task.date)
         return tasks
 
@@ -109,9 +109,7 @@ class AgendaWidget(Gtk.ScrolledWindow):
                 self.listbox.remove(row)
 
         intervals = [0, 1, 2, 7, 14]
-        last = -1000000000  # There should not be any older tasks than this
-        # if there is, that guy has deserved a bug.
-        # TODO develop a proper solution
+        last = -float("inf")
         builder = Gtk.Builder()
         builder.add_from_file(join(Config.DESIGN_DIR, "Agenda.glade"))
         labels = {0: builder.get_object("oneday"),
