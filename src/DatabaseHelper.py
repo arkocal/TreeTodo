@@ -8,6 +8,7 @@ from Task import Task
 # TODO find a proper solution for this
 INVALID_DATETIME = -100000000000
 
+
 class TaskDatabaseHelper(object):
 
     """A helper class to connect to tasks database
@@ -66,6 +67,7 @@ class TaskDatabaseHelper(object):
         """
         # Create root task
         rootTask = Task("Roottask")
+        rootTask.uuid = "00000000-0000-0000-0000-000000000000"
         # Get all tasks
         self.cursor.execute("SELECT * FROM Tasks;")
         # Create hierarchy

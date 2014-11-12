@@ -22,6 +22,11 @@ class TaskTreeElement(TreeElement):
             self.add_child_element(childElement)
 
 
+    def add_child_element(self, childElement):
+        TreeElement.add_child_element(self, childElement)
+        childElement.set_has_tooltip(False)
+
+
     def activate(self):
         self.task.emit("activated")
 
@@ -160,6 +165,10 @@ class TaskTreeElement(TreeElement):
 
         self.set_widget(self.ui)
         self._update_color()
+
+        if self.task.parent and self.task.parent.is_real_task():
+            self.set_has_tooltip(True)
+            self.set_tooltip_text(self.task.parent.title)
 
         self.show_all()
 

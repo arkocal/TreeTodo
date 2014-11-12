@@ -22,7 +22,7 @@ class DateDialog(Gtk.MessageDialog):
         box = self.get_message_area()
         for child in box.get_children():
             box.remove(child)
-        
+
         content = builder.get_object("all")
         box.add(content)
         self.calendar = builder.get_object("calendar")
@@ -121,7 +121,7 @@ class NewTaskDialog(Gtk.MessageDialog):
     def __init__(self, parent, task_=None):
         Gtk.MessageDialog.__init__(self, parent,
                                    buttons=Gtk.ButtonsType.OK_CANCEL)
-        #TODO translation
+        # TODO translation
         self.set_title("New task")
 
         # Add content

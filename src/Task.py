@@ -35,7 +35,7 @@ class Task(GObject.GObject):
         elif type(arg) == str:
             self.new_from_title(arg)
 
-    
+
     def new_from_title(self, title):
         self.title = title
         self.description = ""
@@ -55,11 +55,12 @@ class Task(GObject.GObject):
         self.depth = 0
 
         """Task UUID"""
-        self.uuid = uuid.uuid1()
+        self.uuid = str(uuid.uuid1())
 
 
     def new_from_tuple(self, t):
-        (uuid, title, description, color, unixdate, done, parentUUID, archived) = t
+        (uuid, title, description, color,
+         unixdate, done, parentUUID, archived) = t
         self.title = title
         self.description = description
         self.color = color
@@ -70,10 +71,10 @@ class Task(GObject.GObject):
             self.date = None
         self.done = bool(done)
         self.archived = bool(archived)
-        
+
         self.subtasks = []
         self.archivedSubtasks = []
-        
+
         self.parent = None
         self.depth = 0
         self.uuid = uuid
@@ -214,3 +215,7 @@ class Task(GObject.GObject):
                 result += [c for c in child.get_all_archived_subtasks(onlyTop)
                            if c not in result]
         return result
+
+    def is_real_task(self):
+        """ Return if task is real or a placeholder like rootTask"""
+        return self.uuid != "00000000-0000-0000-0000-000000000000"

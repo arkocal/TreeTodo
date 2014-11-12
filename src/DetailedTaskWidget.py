@@ -68,7 +68,7 @@ class DetailedTaskWidget(Gtk.Box):
 
     def _init_ui(self):
         self.set_border_width(6)
-    
+
         self.builder = Gtk.Builder()
         self.builder.add_from_file(join(Config.DESIGN_DIR,
                                         "DetailedTaskWidget.glade"))
