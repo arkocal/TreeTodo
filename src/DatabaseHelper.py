@@ -71,12 +71,14 @@ class TaskDatabaseHelper(object):
         # Get all tasks
         self.cursor.execute("SELECT * FROM Tasks;")
         # Create hierarchy
-        tasks = []
+        tasks = [(rootTask.uuid, rootTask)]
         for t in self.cursor.fetchall():
             # Add parent UUID to tuple as it is not stored in task
             tasks.append((t[6], Task(t)))
 
         for (parentUUID, t) in tasks:
+            if t==rootTask:
+                continue
             parents = [p for (_, p) in tasks if parentUUID == p.uuid]
             if parents:
                 if t.archived:

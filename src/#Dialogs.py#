@@ -408,7 +408,6 @@ def add_subtask(toplevel, task):
 
     if not newTitle:
         return  # Empty title = Cancel
-    print (newTitle, newDescription, newDate, newColor)
     newTask = Task(newTitle)
     if newDescription:
         newTask.description = newDescription

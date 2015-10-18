@@ -10,7 +10,6 @@ import Dialogs
 import Config
 
 
-
 class TreeTodoWindow(Gtk.Window):
 
     def __init__(self, rootTask):
@@ -18,13 +17,7 @@ class TreeTodoWindow(Gtk.Window):
         self.set_default_size(Config.DEFAULT_WIDTH, Config.DEFAULT_HEIGHT)
         self.connect("delete-event", Gtk.main_quit)
 
-        self.rootTask = rootTask
-        rootTask.color = Config.DEFAULT_BG
-
-        for task in (rootTask.get_all_subtasks() +
-                     rootTask.get_all_archived_subtasks()):
-            task.connect("updated", self.on_task_updated)
-
+        self._load_tasks(rootTask)
         self._build()
         self._create_ui()
 
@@ -60,10 +53,20 @@ class TreeTodoWindow(Gtk.Window):
             self._update_pane_text()
 
 
+    def _load_tasks(self, rootTask):
+        self.rootTask = rootTask
+        rootTask.color = Config.DEFAULT_BG
+
+        for task in (rootTask.get_all_subtasks() +
+                     rootTask.get_all_archived_subtasks()):
+            task.connect("updated", self.on_task_updated)
+
+
     def _create_ui(self):
         self._init_stack()
         self._init_header()
         self.show_all()
+        self.noTaskLabel.set_visible(not self.rootTask.subtasks)
 
 
     def _build(self):
@@ -72,7 +75,6 @@ class TreeTodoWindow(Gtk.Window):
                                                 "Window.glade"))
 
         self.scroll = self.builder.get_object("scrolledWindow")
-        self.addButton = self.builder.get_object("addButton")
         self.noTaskLabel = self.builder.get_object("noTaskLabel")
 
 
@@ -82,10 +84,9 @@ class TreeTodoWindow(Gtk.Window):
         self.rootElement.toggle_on()
         # Root element should not be visible
         self.rootElement.remove(self.rootElement.get_children()[0])
-        self.tasks.pack_end(self.rootElement, True, True, 0)
 
-        if not self.rootTask.subtasks:
-            self.tasks.add(self.noTaskLabel)
+        self.tasks.add(self.noTaskLabel)
+        self.tasks.pack_end(self.rootElement, True, True, 0)
 
         self.scroll.add_with_viewport(self.tasks)
 
@@ -105,12 +106,14 @@ class TreeTodoWindow(Gtk.Window):
 
 
     def _init_header(self):
-        self.headerBar = Gtk.HeaderBar()
-        self.headerBar.set_show_close_button(True)
-        self.addButton.connect("clicked", self._new_task)
-        self.headerBar.pack_start(self.addButton)
-        self.headerBar.set_custom_title(self.stackSwitcher)
-        self.set_titlebar(self.headerBar)
+        headerBar = Gtk.HeaderBar()
+        headerBar.set_show_close_button(True)
+
+        addButton = self.builder.get_object("addButton")
+        addButton.connect("clicked", self._new_task)
+        headerBar.pack_start(addButton)
+        headerBar.set_custom_title(self.stackSwitcher)
+        self.set_titlebar(headerBar)
 
 
     def _new_task(self, *args):
@@ -118,9 +121,4 @@ class TreeTodoWindow(Gtk.Window):
 
 
     def _update_pane_text(self):
-        if (not self.rootTask.subtasks and
-                self.noTaskLabel not in self.paneContent.get_children()):
-            self.paneContent.pack_start(self.noTaskLabel, False, False, 12)
-        elif (self.rootTask.subtasks and
-                self.noTaskLabel in self.paneContent.get_children()):
-            self.paneContent.remove(self.noTaskLabel)
+        self.noTaskLabel.set_visible(not self.rootTask.subtasks)
