@@ -6,7 +6,6 @@ import Config
 from TaskTreeElement import TaskTreeElement
 
 
-
 class ArchiveWidget (Gtk.ScrolledWindow):
 
     def __init__(self, rootTask):
@@ -36,10 +35,13 @@ class ArchiveWidget (Gtk.ScrolledWindow):
         self.show_all()
 
 
-    # TODO revisit, not everything needs to be updated
     def on_task_archived(self, task):
-        if task.parent.archived or task.archivedSubtasks:
+        if task.parent.archived:
+            pass
+        elif task.get_all_archived_subtasks():
+        # TODO revisit, not everything needs to be updated
             for child in self.flowbox.get_children():
+                print(child)
                 self.flowbox.remove(child)
             for task in self.rootTask.get_all_archived_subtasks(onlyTop=True):
                 self._add_task(task)
@@ -63,7 +65,7 @@ class ArchiveWidget (Gtk.ScrolledWindow):
         if labelHolder in self.flowbox.get_children():
             labelHolder.remove(self.noTaskLabel)
             self.flowbox.remove(labelHolder)
-        element = TaskTreeElement(task)
+        element = TaskTreeElement(task, True)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.pack_start(element, True, True, 0)
         self.flowbox.add(box)

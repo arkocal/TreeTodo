@@ -8,9 +8,10 @@ import Config
 import Dialogs
 
 
+
 class TaskTreeElement(TreeElement):
 
-    def __init__(self, task):
+    def __init__(self, task, includeArchived=False):
         TreeElement.__init__(self)
         self.task = task
         self.task.connect("updated", self.on_task_updated)
@@ -18,8 +19,13 @@ class TaskTreeElement(TreeElement):
         self._init_ui()
 
         for subtask in self.task.subtasks:
-            childElement = TaskTreeElement(subtask)
+            childElement = TaskTreeElement(subtask, includeArchived)
             self.add_child_element(childElement)
+        if includeArchived:
+            for subtask in self.task.archivedSubtasks:
+                childElement = TaskTreeElement(subtask, includeArchived)
+                self.add_child_element(childElement)
+        
 
 
     def add_child_element(self, childElement):
