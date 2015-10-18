@@ -25,40 +25,12 @@
     <property name="ellipsize">end</property>
     <property name="lines">6</property>
   </object>
-  <object class="GtkPaned" id="paned">
+  <object class="GtkScrolledWindow" id="scrolledWindow">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
+    <property name="shadow_type">in</property>
     <child>
-      <object class="GtkScrolledWindow" id="scrolledWindow">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="shadow_type">in</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="resize">False</property>
-        <property name="shrink">True</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="stackHolder">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="has_tooltip">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="resize">True</property>
-        <property name="shrink">True</property>
-      </packing>
+      <placeholder/>
     </child>
   </object>
 </interface>

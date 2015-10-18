@@ -41,7 +41,6 @@ class ArchiveWidget (Gtk.ScrolledWindow):
         elif task.get_all_archived_subtasks():
         # TODO revisit, not everything needs to be updated
             for child in self.flowbox.get_children():
-                print(child)
                 self.flowbox.remove(child)
             for task in self.rootTask.get_all_archived_subtasks(onlyTop=True):
                 self._add_task(task)

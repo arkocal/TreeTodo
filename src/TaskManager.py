@@ -15,8 +15,6 @@ class TaskManager(GObject.GObject):
         self._dbHelper = DatabaseHelper.TaskDatabaseHelper(Config.DB_PATH)
 
         self.rootTask = self._dbHelper.get_root_task()
-        print ("Here")
-        print (self.rootTask, self.rootTask.subtasks)
         for task in (self.rootTask.get_all_subtasks() +
                      self.rootTask.get_all_archived_subtasks()):
             task.connect("updated", self.on_task_updated)
@@ -32,7 +30,6 @@ class TaskManager(GObject.GObject):
                           TaskUpdateType.ARCHIVED,
                           TaskUpdateType.DEARCHIVED]:
             if task.parent:  # Root task should not be saved
-                print ("Saving task: {}".format(task.title))
                 self._dbHelper.save_task(task)
 
         elif updateType == TaskUpdateType.SUBTASK_ADDED:

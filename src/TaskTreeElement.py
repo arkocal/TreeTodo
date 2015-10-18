@@ -25,7 +25,7 @@ class TaskTreeElement(TreeElement):
             for subtask in self.task.archivedSubtasks:
                 childElement = TaskTreeElement(subtask, includeArchived)
                 self.add_child_element(childElement)
-        
+
 
 
     def add_child_element(self, childElement):

@@ -119,6 +119,5 @@ class TreeTodoWindow(Gtk.Window):
     def _new_task(self, *args):
         Dialogs.add_subtask(self, self.rootTask)
 
-
     def _update_pane_text(self):
         self.noTaskLabel.set_visible(not self.rootTask.subtasks)

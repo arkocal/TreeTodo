@@ -271,12 +271,6 @@ class TaskEditPopover(Gtk.Popover):
             else:
                 self.task.archive()
             self.hide()
-        # Stack transition triggers some event that leds popover to
-        # disappear, so modal can not be set True until transition
-        # is over
-        while self.stack.get_transition_running():
-            Gtk.main_iteration()
-        self.set_modal(True)
 
 
     def _create_view_description_submenu(self):
@@ -398,7 +392,7 @@ def edit_task_color(task):
 
 def add_subtask(toplevel, task):
     """Create Dialog to edit task title and description"""
-    dialog = NewTaskDialog(toplevel)#, color=task.color)
+    dialog = NewTaskDialog(toplevel, color=task.color)
     try:
         newTitle, newDescription, newDate, newColor = dialog.run()
     except TypeError:  # Cancel
@@ -408,7 +402,6 @@ def add_subtask(toplevel, task):
 
     if not newTitle:
         return  # Empty title = Cancel
-    print (newTitle, newDescription, newDate, newColor)
     newTask = Task(newTitle)
     if newDescription:
         newTask.description = newDescription

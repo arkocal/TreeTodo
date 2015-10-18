@@ -59,6 +59,7 @@ class TaskDatabaseHelper(object):
 
 
     def get_root_task(self):
+        #TODO review
         """Return a tree of tasks
 
         Read all tasks from a database creating the hierarchy and add
